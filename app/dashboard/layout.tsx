@@ -1,8 +1,8 @@
 import "../../styles/globals.css";
 
 export const metadata = {
-  title: "PRC Application Management System",
-  description: "Thesis keme",
+  title: "PRC Inspection and Monitoring System",
+  description: "",
 };
 
 export default function DashboardLayout({
@@ -11,6 +11,8 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <section className="min-h-[80vh] w-full bg-[#F9FAFE] px-6 lg:px-12 py-6">{children}</section>
+    <section className="min-h-[80vh] w-full bg-[#F9FAFE] px-6 lg:px-12 py-6">
+      {children}
+    </section>
   );
 }
