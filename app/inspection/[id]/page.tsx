@@ -14,7 +14,6 @@ import PendingWaiting from "@/components/Tasks/PendingWaiting";
 const firebase = new Firebase();
 
 export default function Page({ params }: { params: { id: string } }) {
-  const [showEditInspectionModal, setShowEditInspectionModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const { data }: any = useSession();
@@ -38,14 +37,16 @@ export default function Page({ params }: { params: { id: string } }) {
 
   const handleScheduleApproval = async (decision: Number) => {
     if (
-      confirm(
+      !confirm(
         `Are you sure you want to ${
           decision == 0 ? "not approve" : "approve"
         } this inspection forward?`
-      ) == undefined
+      )
     ) {
+      console.log("first");
       return;
     }
+
     setIsLoading(true);
 
     let inspection: Inspection = {} as Inspection;
@@ -89,18 +90,6 @@ export default function Page({ params }: { params: { id: string } }) {
     setIsLoading(false);
   };
 
-  useEffect(() => {
-    const body = document.querySelector("body");
-    if (body) {
-      // null check added here
-      if (showEditInspectionModal) {
-        body.style.overflow = "hidden"; // Disable scrolling
-      } else {
-        body.style.overflow = "auto"; // Enable scrolling
-      }
-    }
-  }, [showEditInspectionModal]);
-
   if (Object.keys(inspectionData).length == 0) return <></>;
 
   const breadcrumbItems = [
@@ -124,15 +113,6 @@ export default function Page({ params }: { params: { id: string } }) {
             <h1 className="font-monts font-bold text-lg text-darkerGray">
               Inspection Details
             </h1>
-            <div
-              className="flex flex-row gap-2 cursor-pointer items-center"
-              onClick={() => setShowEditInspectionModal(true)}
-            >
-              <BsPencil className="fill-darkerGray" />
-              <p className="font-monts text-sm font-semibold text-darkerGray">
-                Edit
-              </p>
-            </div>
           </div>
           <div className="flex flex-col lg:flex-row justify-between gap-4">
             <div className="flex flex-col gap-1">

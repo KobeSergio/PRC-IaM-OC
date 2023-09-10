@@ -39,7 +39,7 @@ export default function InspectionApproval({
           </p>
         </div>
       </div>
-      <div className="flex flex-row flex-wrap justify-center gap-2">
+      <div className="flex flex-row flex-wrap justify-center gap-2 mt-4">
         <button
           onClick={() => decision(0)}
           type="button"

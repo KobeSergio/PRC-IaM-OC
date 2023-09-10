@@ -32,7 +32,7 @@ export const authOptions: AuthOptions = {
     async jwt({ token, user }: any) {
       // This callback is invoked when signing in and whenever a session is accessed (if `jwt` session strategy is used).
       if (user) {
-        token.prb_id = user.prb_id;
+        token.oc_id = user.oc_id;
         token.createdAt = user.createdAt;
         token.name = user.name;
         token.lastLoggedIn = user.lastLoggedIn;
@@ -41,7 +41,7 @@ export const authOptions: AuthOptions = {
     },
 
     async session({ session, token }: any) {
-      session.prb_id = token.prb_id;
+      session.oc_id = token.oc_id;
       session.name = token.name;
       session.createdAt = token.createdAt;
       session.lastLoggedIn = token.lastLoggedIn;

@@ -76,7 +76,7 @@ export default function Dashboard() {
     }
   }, [selectedYear, inspections]);
 
-  //Get number of inspections where inspection_task is Scheduling, NIM, VS, and IMWPR
+  //Get number of inspections where inspection_task is inspectionApproval and cancellationApproval
   const [inspectionApproval, setInspectionApproval] = useState(0);
   const [cancellationApproval, setCancellationApproval] = useState(0);
 
@@ -206,30 +206,19 @@ export default function Dashboard() {
                   <span className="font-medium">proceed to resolve them</span>
                 </h3>
                 <div className="w-full flex flex-row justify-between gap-5 mt-5">
-                  <div className="w-1/2 flex flex-col gap-3">
+                  <div className="w-full flex flex-col gap-3">
                     <h6 className="font-monts text-sm font-semibold">
                       Pre-inspection tasks:
                     </h6>
-                    <div className="flex flex-row justify-between font-monts text-sm">
-                      <p className="font-medium">Scheduling</p>
-                      <p className="font-semibold">{inspectionApproval}</p>
-                    </div>
-                    <div className="flex flex-row justify-between font-monts text-sm">
-                      <p className="font-medium">
-                        Notice of Inspection and Monitoring (NIM)
-                      </p>
-                      <p className="font-semibold">{cancellationApproval}</p>
-                    </div>
-                    <div className="flex flex-row justify-between font-monts text-sm">
-                      <p className="font-medium">Inspection Approval</p>
-                      <p className="font-semibold">{inspectionApproval}</p>
-                    </div>
-                  </div>
-                  <div className="w-1/2 flex flex-col gap-3">
-                    <h6 className="font-monts text-sm font-semibold"></h6>
-                    <div className="flex flex-row justify-between font-monts text-sm">
-                      <p className="font-medium">Cancellation Approval</p>
-                      <p className="font-semibold">{cancellationApproval}</p>
+                    <div className="flex gap-12">
+                      <div className="flex basis-1/2 flex-row justify-between font-monts text-sm ">
+                        <p className="font-medium">Inspection Approval</p>
+                        <p className="font-semibold">{inspectionApproval}</p>
+                      </div>
+                      <div className="flex basis-1/2 flex-row justify-between font-monts text-sm">
+                        <p className="font-medium">Cancellation Approval</p>
+                        <p className="font-semibold">{cancellationApproval}</p>
+                      </div>
                     </div>
                   </div>
                 </div>

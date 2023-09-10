@@ -9,7 +9,11 @@ export default function PendingWaiting({ task }: any) {
   }
 
   if (task.toLowerCase().includes("inspection recommendation")) {
-    taskContent = "Inspection is being reviewed by OC";
+    taskContent = "Inspection is being reviewed by ACD";
+  }
+
+  if (task.toLowerCase().includes("nim")) {
+    taskContent = "Inspection NIM is being prepared to send";
   }
 
   if (task.toLowerCase().includes("waiting requirements")) {
