@@ -35,6 +35,69 @@ export default function Page({ params }: { params: { id: string } }) {
     }
   }, [params.id]);
 
+  const handleCancellationApproval = async (decision: number) => {
+    if (
+      !confirm(
+        `Are you sure you want to ${
+          decision == 0 ? "not approve" : "approve"
+        } this inspection cancellation?`
+      )
+    ) {
+      return;
+    }
+
+    setIsLoading(true);
+
+    let inspection: Inspection = {} as Inspection;
+    let log: Log = {} as Log;
+
+    if (decision == 0) {
+      //Continue with the inspection
+      //Previous inspection_task
+      const previousInspectionTask = inspectionData.inspection_task
+        .split("<")[1]
+        .split("/")[2]
+        .replace(">", "");
+
+      inspection = {
+        ...inspectionData,
+        inspection_task: previousInspectionTask,
+      };
+
+      log = {
+        log_id: "",
+        timestamp: new Date().toLocaleString(),
+        client_details: inspectionData.client_details as Client,
+        author_details: inspectionData.oc_details,
+        action: "Cancelled cancellation approval",
+        author_type: "",
+        author_id: "",
+      };
+    } else if (decision == 1) {
+      //Mark as cancelled
+      inspection = {
+        ...inspectionData,
+        inspection_task: "Cancelled",
+        status: "Cancelled",
+      };
+
+      log = {
+        log_id: "",
+        timestamp: new Date().toLocaleString(),
+        client_details: inspectionData.client_details as Client,
+        author_details: inspectionData.oc_details,
+        action: "Accomplished cancellation approval",
+        author_type: "",
+        author_id: "",
+      };
+    }
+
+    await firebase.createLog(log, data.acd_id);
+    await firebase.updateInspection(inspection);
+    setInspectionData(inspection);
+    setIsLoading(false);
+  };
+
   const handleScheduleApproval = async (decision: Number) => {
     if (
       !confirm(
@@ -191,7 +254,11 @@ export default function Page({ params }: { params: { id: string } }) {
             isLoading={isLoading}
           />
         ) : task.includes("cancellation approval") ? (
-          <InspectionCancellation />
+          <InspectionCancellation
+            inspectionData={inspectionData}
+            decision={handleCancellationApproval}
+            isLoading={isLoading}
+          />
         ) : (
           <PendingWaiting task={task} />
         )}

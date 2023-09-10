@@ -117,8 +117,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (logs.length != 0 && data != null) {
-      const user = data as any;
-      const _logs = logs.filter((log) => log.author_id == data.oc_id);
+      const _logs = logs.filter((log) => log.author_type == "oc");
 
       const accomplished = _logs.filter((log) =>
         log.action.includes("Accomplished")
