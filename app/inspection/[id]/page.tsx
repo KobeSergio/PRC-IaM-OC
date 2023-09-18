@@ -134,7 +134,9 @@ export default function Page({ params }: { params: { id: string } }) {
       //Make inspection for NIM
       inspection = {
         ...inspectionData,
-        inspection_task: "For NIM",
+        inspection_task: `For NIM <${formatDateToDash(
+          new Date(Date.now() + 3 * 24 * 60 * 60 * 1000)
+        )}>`,
       };
       log = {
         log_id: "",
@@ -265,4 +267,10 @@ export default function Page({ params }: { params: { id: string } }) {
       </div>
     </>
   );
+}
+function formatDateToDash(dateObj: Date) {
+  const year = dateObj.getFullYear();
+  const month = String(dateObj.getMonth() + 1).padStart(2, "0"); // Months are 0-based
+  const day = String(dateObj.getDate()).padStart(2, "0");
+  return `${year}-${day}-${month}`;
 }
