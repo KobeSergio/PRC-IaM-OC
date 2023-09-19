@@ -137,6 +137,7 @@ export default function Page({ params }: { params: { id: string } }) {
         inspection_task: `For NIM <${formatDateToDash(
           new Date(Date.now() + 3 * 24 * 60 * 60 * 1000)
         )}>`,
+        status: "Additional",
       };
       log = {
         log_id: "",
