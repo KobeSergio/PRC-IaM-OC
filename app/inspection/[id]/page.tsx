@@ -11,6 +11,8 @@ import { Client } from "@/types/Client";
 import { useSession } from "next-auth/react";
 import { Log } from "@/types/Log";
 import PendingWaiting from "@/components/Tasks/PendingWaiting";
+import { extractFilenameFromFirebaseURL } from "@/lib/filenameExtractor";
+import { formatDateToDash } from "@/lib/formatDates";
 const firebase = new Firebase();
 
 export default function Page({ params }: { params: { id: string } }) {
@@ -244,7 +246,14 @@ export default function Page({ params }: { params: { id: string } }) {
             <div className="flex w-full justify-end">
               <h6 className="font-monts text-sm font-semibold text-darkerGray">
                 Travel/Office Order No.:{" "}
-                <span className="text-primaryBlue">#92152613734734</span>
+                <a
+                  className="text-primaryBlue"
+                  href={inspectionData.inspection_TO}
+                  target="_blank"
+                >
+                  #
+                  {extractFilenameFromFirebaseURL(inspectionData.inspection_TO)}
+                </a>
               </h6>
             </div>
           )}
@@ -268,10 +277,4 @@ export default function Page({ params }: { params: { id: string } }) {
       </div>
     </>
   );
-}
-function formatDateToDash(dateObj: Date) {
-  const year = dateObj.getFullYear();
-  const month = String(dateObj.getMonth() + 1).padStart(2, "0"); // Months are 0-based
-  const day = String(dateObj.getDate()).padStart(2, "0");
-  return `${year}-${day}-${month}`;
 }
