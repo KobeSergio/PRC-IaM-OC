@@ -13,6 +13,7 @@ import { Log } from "@/types/Log";
 import PendingWaiting from "@/components/Tasks/PendingWaiting";
 import { extractFilenameFromFirebaseURL } from "@/lib/filenameExtractor";
 import { formatDateToDash } from "@/lib/formatDates";
+import InspectionSummary from "@/components/Tasks/InspectionSummary";
 const firebase = new Firebase();
 
 export default function Page({ params }: { params: { id: string } }) {
@@ -209,14 +210,6 @@ export default function Page({ params }: { params: { id: string } }) {
             </div>
             <div className="flex flex-col gap-1">
               <h6 className="font-monts text-sm font-semibold text-darkGray">
-                RO Assigned
-              </h6>
-              <p className="font-monts text-sm font-semibold text-darkerGray">
-                {inspectionData.ro_details.office}
-              </p>
-            </div>
-            <div className="flex flex-col gap-1">
-              <h6 className="font-monts text-sm font-semibold text-darkGray">
                 Email
               </h6>
               <p className="font-monts text-sm font-semibold text-primaryBlue hover:underline">
@@ -233,17 +226,25 @@ export default function Page({ params }: { params: { id: string } }) {
             </div>
             <div className="flex flex-col gap-1">
               <h6 className="font-monts text-sm font-semibold text-darkGray">
+                Date Issued
+              </h6>
+              <p className="font-monts text-sm font-semibold text-darkerGray">
+                {formatDateToDash(new Date(inspectionData.createdAt))}
+              </p>
+            </div>
+            <div className="flex flex-col gap-1">
+              <h6 className="font-monts text-sm font-semibold text-darkGray">
                 Inspection Date
               </h6>
               <p className="font-monts text-sm font-semibold text-darkerGray">
-                {inspectionData.inspection_task.includes("Scheduling")
+                {inspectionData.inspection_task == "Scheduling"
                   ? "TBD"
                   : inspectionData.inspection_date}
               </p>
             </div>
           </div>
-          {inspectionData.inspection_TO !== "" && (
-            <div className="flex w-full justify-end">
+          <div className="flex w-full justify-between mt-4">
+            {inspectionData.inspection_TO !== "" && (
               <h6 className="font-monts text-sm font-semibold text-darkerGray">
                 Travel/Office Order No.:{" "}
                 <a
@@ -255,8 +256,23 @@ export default function Page({ params }: { params: { id: string } }) {
                   {extractFilenameFromFirebaseURL(inspectionData.inspection_TO)}
                 </a>
               </h6>
-            </div>
-          )}
+            )}
+            {inspectionData.inspection_COC !== "" && (
+              <h6 className="font-monts text-sm font-semibold text-darkerGray">
+                Certificate of Compliance is valid until{" "}
+                {
+                  //Add 5 years to the fulfilledAt date
+                  formatDateToDash(
+                    new Date(
+                      new Date(inspectionData.fulfilledAt).setFullYear(
+                        new Date(inspectionData.fulfilledAt).getFullYear() + 5
+                      )
+                    )
+                  )
+                }
+              </h6>
+            )}
+          </div>
         </div>
 
         {task.includes("inspection approval") ? (
@@ -271,6 +287,10 @@ export default function Page({ params }: { params: { id: string } }) {
             decision={handleCancellationApproval}
             isLoading={isLoading}
           />
+        ) : task.includes("finished") ? (
+          <>
+            <InspectionSummary inspectionDetails={inspectionData} />
+          </>
         ) : (
           <PendingWaiting task={task} />
         )}
