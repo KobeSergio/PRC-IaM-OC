@@ -82,7 +82,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <link rel="icon" href="/assets/icons/favicon.svg" sizes="any" />
-      <title>PRC Inspection and Monitoring System</title>
+      <title>OC BOND IaM</title>
       <body>
         <SessionProvider>
           <InspectionProvider>

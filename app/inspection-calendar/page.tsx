@@ -19,7 +19,6 @@ import { useRouter } from "next/navigation";
 
 export default function InspectionCalendar() {
   const { push } = useRouter();
-
   const [showFilterModal, setShowFilterModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showCalendar, setShowCalendar] = useState(false);
@@ -97,10 +96,6 @@ export default function InspectionCalendar() {
     }
   }, [search]);
 
-  const inspectionsWithTags = inspections.filter(
-    (inspection) => inspection.status != "Pending"
-  );
-
   const [preInspectionData, setPreInspectionData] = useState({
     labels: ["Rescheduled", "Cancelled", "Random", "Approved/Additional"],
     datasets: [
@@ -146,13 +141,13 @@ export default function InspectionCalendar() {
       (inspection) => inspection.status == "Non-compliant"
     );
     const forComplianceInspections = inspections.filter(
-      (inspection) => inspection.status == "For compliance"
+      (inspection) => inspection.status == "For-compliance"
     );
     const compliantInspections = inspections.filter(
       (inspection) => inspection.status == "Compliant"
     );
     const underReviewInspections = inspections.filter(
-      (inspection) => inspection.status == "Under review"
+      (inspection) => inspection.status == "Pending"
     );
 
     setPreInspectionData({
@@ -453,8 +448,7 @@ export default function InspectionCalendar() {
                   {""}
                 </h3>
               </div>
-
-              <div className="lg:overflow-y-auto w-full max-h-[25rem] justify-center items-center flex flex-col">
+              <div className="lg:overflow-y-auto w-full max-h-[25rem]">
                 {filteredInspections.length == 0 ? (
                   <div className="flex justify-center items-center p-6">
                     <h3 className="font-monts font-medium text-base text-center text-darkerGray">
