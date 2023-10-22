@@ -15,6 +15,7 @@ import { PRB } from "@/types/PRB";
 import { Log } from "@/types/Log";
 import { Inspection } from "@/types/Inspection";
 import { useSession } from "next-auth/react";
+import { formatDateToYYYYMMDD } from "@/lib/formatDates";
 ChartJS.register(ArcElement);
 
 export default function Dashboard() {
@@ -347,45 +348,79 @@ export default function Dashboard() {
                 </div>
               ) : (
                 <>
-                  {filteredInspections.map((row, index) => (
-                    <div
-                      key={index}
-                      className={`min-w-[1068.8px] grid grid-cols-12 p-6 ${
-                        index < filteredInspections.length - 1
-                          ? "border-b border-[#BDBDBD] "
-                          : "border-none"
-                      }  `}
-                    >
-                      <h3 className=" col-span-1 font-monts font-semibold text-sm text-darkerGray px-4 pl-0">
-                        {row.inspection_date}
-                      </h3>
-                      <h3 className=" col-span-4 font-monts font-semibold text-sm text-darkerGray px-4">
-                        {row.client_details.name}
-                      </h3>
-                      <h3 className=" col-span-2 font-monts font-semibold text-sm text-center text-darkerGray px-4">
-                        {row.client_details.type}
-                      </h3>
-                      <h3 className=" col-span-1 font-monts font-semibold text-sm text-center text-darkerGray px-4">
-                        {row.inspection_mode}
-                      </h3>
-                      <h3 className=" col-span-2 font-monts font-semibold text-sm text-center text-darkerGray px-4">
-                        {
-                          row.inspection_task.replace(/<[^>]+>/g, "").trim() //Removes <>
-                        }
-                      </h3>
-                      <h3 className=" col-span-1 font-monts font-semibold text-sm text-center text-darkerGray px-4">
-                        {row.inspection_date}
-                      </h3>
-                      <h3 className=" col-span-1 font-monts font-semibold text-sm text-center text-darkerGray px-4 pr-0">
-                        <Link
-                          href={"inspection/" + row.inspection_id}
-                          className="font-monts font-semibold text-sm text-primaryBlue p-3 pl-0 hover:underline"
-                        >
-                          View
-                        </Link>
-                      </h3>
-                    </div>
-                  ))}
+                  {filteredInspections.map((row, index) => {
+                    const fulfillBefore = row.inspection_task.includes("<")
+                      ? //If there is <> in the task and if there is a / split it and get the last index which is the date. If there is no /, just get the date inside the <>
+                        row.inspection_task.split("<")[1].split("/").length > 1
+                        ? row.inspection_task
+                            .split("<")[1]
+                            .split("/")
+                            .slice(-1)[0]
+                            .split(",")[0]
+                        : row.inspection_task.split("<")[1]
+                      : //If there is no <> it means that the schedule is initial, get the createdAt date and add 3 days to it and format the date to
+                        formatDateToYYYYMMDD(
+                          new Date(
+                            new Date(row.createdAt).getTime() +
+                              3 * 24 * 60 * 60 * 1000
+                          )
+                        );
+                    return (
+                      <div
+                        key={index}
+                        className={`min-w-[1068.8px] grid grid-cols-12 p-6 ${
+                          index < filteredInspections.length - 1
+                            ? "border-b border-[#BDBDBD] "
+                            : "border-none"
+                        }  `}
+                      >
+                        <h3 className=" col-span-1 font-monts font-semibold text-sm text-darkerGray px-4 pl-0">
+                          {row.inspection_date}
+                        </h3>
+                        <h3 className=" col-span-4 font-monts font-semibold text-sm text-darkerGray px-4">
+                          {row.client_details.name}
+                        </h3>
+                        <h3 className=" col-span-2 font-monts font-semibold text-sm text-center text-darkerGray px-4">
+                          {row.client_details.type}
+                        </h3>
+                        <h3 className=" col-span-1 font-monts font-semibold text-sm text-center text-darkerGray px-4">
+                          {row.inspection_mode}
+                        </h3>
+                        <h3 className=" col-span-2 font-monts font-semibold text-sm text-center text-darkerGray px-4">
+                          {
+                            row.inspection_task.replace(/<[^>]+>/g, "").trim() //Removes <>
+                          }
+                        </h3>
+                        <h3 className="flex justify-center  col-span-2 font-monts font-semibold text-sm text-center text-darkerGray px-4">
+                          {fulfillBefore.replace(/>/g, "").trim()}
+                          {
+                            //If fulfillBefore's day is less than 2 days from now, show the red notification if not, show orange.
+                            new Date(
+                              fulfillBefore.replace(/>/g, "").trim()
+                            ).getTime() -
+                              new Date().getTime() <
+                            2 * 24 * 60 * 60 * 1000 ? (
+                              <div className="ml-2 bg-red-500 text-white w-[1rem] h-[1rem] rounded-full flex items-center justify-center">
+                                !
+                              </div>
+                            ) : (
+                              <div className="ml-2 bg-orange-500 text-white w-[1rem] h-[1rem] rounded-full flex items-center justify-center">
+                                !
+                              </div>
+                            )
+                          }
+                        </h3>
+                        <h3 className=" col-span-1 font-monts font-semibold text-sm text-center text-darkerGray px-4 pr-0">
+                          <Link
+                            href={"inspection/" + row.inspection_id}
+                            className="font-monts font-semibold text-sm text-primaryBlue p-3 pl-0 hover:underline"
+                          >
+                            View
+                          </Link>
+                        </h3>
+                      </div>
+                    );
+                  })}
                 </>
               )}
             </div>

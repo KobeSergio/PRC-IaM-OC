@@ -165,6 +165,7 @@ export default function IMWPR({ IMWPRDetails }: { IMWPRDetails: IMWPR }) {
             Other comments:
           </h6>
           <textarea
+            title="Other Comments"
             value={IMWPRDetails.other_comments}
             rows={3}
             disabled
@@ -174,6 +175,7 @@ export default function IMWPR({ IMWPRDetails }: { IMWPRDetails: IMWPR }) {
             Recommendations:
           </h6>
           <textarea
+            title="Recommendations"
             rows={3}
             disabled
             value={IMWPRDetails.recommendations}

@@ -20,8 +20,30 @@ export default function PendingWaiting({ task }: any) {
     taskContent = "Waiting for the requirements from the client";
   }
 
-  if(task.toLowerCase().includes("cancelled")) {
+  if (task.toLowerCase().includes("cancelled")) {
     taskContent = "Inspection has been cancelled";
+  }
+
+  if (task.toLowerCase().includes("sent nim")) {
+    taskContent =
+      "NIM has been sent to the client. Waiting for the requirements from the client";
+  }
+
+  if (task.toLowerCase().includes("for to")) {
+    taskContent = "Waiting for the travel order to be uploaded by the ACD";
+  }
+
+  if (
+    task.toLowerCase().includes("imwpr") ||
+    task.toLowerCase().includes("imat") ||
+    task.toLowerCase().includes("vs")
+  ) {
+    taskContent =
+      "Waiting for the PRB and RO to upload their post-inspection reports";
+  }
+
+  if (task.toLowerCase().includes("finished")) {
+    taskContent = "Waiting for the ACD to upload their post-inspection reports";
   }
 
   return (
