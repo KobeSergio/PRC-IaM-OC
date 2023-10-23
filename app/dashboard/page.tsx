@@ -322,7 +322,7 @@ export default function Dashboard() {
               <h3 className="col-span-1 font-monts font-semibold text-sm text-start text-[#5C5C5C] px-4 pl-0">
                 Inspection Date
               </h3>
-              <h3 className="col-span-4 font-monts font-semibold text-sm text-start text-[#5C5C5C] px-4">
+              <h3 className="col-span-3 font-monts font-semibold text-sm text-start text-[#5C5C5C] px-4">
                 Name
               </h3>
               <h3 className="col-span-2 font-monts font-semibold text-sm text-center text-[#5C5C5C] px-4">
