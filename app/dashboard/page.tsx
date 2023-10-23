@@ -377,7 +377,7 @@ export default function Dashboard() {
                         <h3 className=" col-span-1 font-monts font-semibold text-sm text-darkerGray px-4 pl-0">
                           {row.inspection_date}
                         </h3>
-                        <h3 className=" col-span-4 font-monts font-semibold text-sm text-darkerGray px-4">
+                        <h3 className=" col-span-3 font-monts font-semibold text-sm text-darkerGray px-4">
                           {row.client_details.name}
                         </h3>
                         <h3 className=" col-span-2 font-monts font-semibold text-sm text-center text-darkerGray px-4">
