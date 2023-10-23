@@ -246,7 +246,7 @@ export default function Page({ params }: { params: { id: string } }) {
           <div className="flex w-full justify-between mt-4">
             {inspectionData.inspection_TO !== "" && (
               <h6 className="font-monts text-sm font-semibold text-darkerGray">
-                Travel/Office Order No.:{" "}
+                Travel Order:{" "}
                 <a
                   className="text-primaryBlue"
                   href={inspectionData.inspection_TO}
